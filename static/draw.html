@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="/static/assets/css/dp19styles.css">
+
+    <script src="/static/libs/p5.min.js"></script>
+    <script src="/static/libs/three.min.js"></script>
+    <script src="/static/libs/OrbitControls.js"></script>
+    <script src="/static/libs/OBJLoader.js"></script>
+    <script src="/static/libs/MTLLoader.js"></script>
+</head>
+
+<body>
+    <div id="header">
+        <table width=1220px>
+            <tr>
+                <td style="text-align:left; font-family:Arial, Helvetica, sans-serif; font-size:32px; font-weight:bold"
+                    width=85%> &nbsp My Project </td>
+                <td width=5%> <a href="/"><img src="\static\assets\img\home.png"></a> </td>
+                <td width=5%> <a href="/draw"><img src="\static\assets\img\draw.png"></a></td>
+                <td width=5%> <a href="/help"><img src="\static\assets\img\help.png"></a> </td>
+            </tr>
+        </table>
+    </div>
+    <div id="container" style="margin-top:2%">
+        <script src="/static/js/global.js"></script>
+        <script src="/static/libs/grid.js"></script>
+        <script src="/static/libs/buildingElements.js"></script>
+        <script src="/static/js/userElements.js"></script>
+        <script src="/static/js/2Dmain.js"></script>
+        <script src="/static/js/UItable.js"></script>
+
+
+        <!-- 2D global variables -->
+
+        <div id="div2D"></div> <!-- For the 2D view -->
+        <div id="divElementTypeSelect"></div> <br> <!-- For the edit input buttons -->
+        <div id="divObjProperties">some text</div> <!-- For the object proporty table  -->
+        <div id="objCreateOrEdit"></div> <!-- For the object edit table - currently commented out  -->
+
+        <div id="div3D"></div> <!-- For the 3D view -->
+        <div id="divLevel3D"></div> <!-- For the Levels panel -->
+
+        <!-- 3D global variables -->
+        <script src="/static/js/3Dmain.js"></script>
+
+
+        <div id="divSubmit">
+            <h3> Save Model</h3>
+            <form action="/add" method="post">
+                <textarea name="details" id="update" hidden></textarea>
+                Enter filename: 
+                <input type="text" value="filename" name="name" id="filename"   required />
+                <button type="submit" class="button" onclick="transmitData()"> SUBMIT DATA </button>
+            </form>
+            
+            <select id="select" onchange="selectorChange()"> </select>
+        </div>
+
+
+        <script>
+            // Fetch model data from API
+            fetch('/api/draw-data')
+                .then(response => response.json())
+                .then(data => {
+                    MODELDATA = JSON.stringify(data);
+                    setup3D();
+                    setInterval(draw3D, 100);
+                })
+                .catch(error => {
+                    console.error('Error loading model data:', error);
+                    MODELDATA = "";
+                    setup3D();
+                    setInterval(draw3D, 100);
+                });
+        </script>
+    </div>
+</body>
+
+</html>
