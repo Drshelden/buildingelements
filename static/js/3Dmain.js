@@ -45,7 +45,8 @@ function setup3D() {
 }
 
 
-function update3D() {
+
+function draw3D() {
     for (var i = 0; i < meshArr.length; i++) {
         try{
             meshArr[i].geometry.dispose();
@@ -56,10 +57,6 @@ function update3D() {
         delete meshArr[i];
     }
     meshArr = [];
-}
-
-function draw3D() {
-    update3D();
     var axes = new THREE.AxesHelper(45);
     scene3D.add(axes);
     if (_BEList.length > 0) {
@@ -90,5 +87,6 @@ function onWindowResize3D() {
 }
 
 function render3D() {
+    if (!renderer || !scene3D || !camera3D) return;
     renderer.render(scene3D, camera3D);
 }

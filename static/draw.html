@@ -4,13 +4,9 @@
 <head>
     <link rel="stylesheet" href="/static/styles.css">
 
-    <script src="/static/libs/p5.min.js"></script>
-    <!-- <script src="/static/libs/three.min.js"></script>
-    <script src="/static/libs/OrbitControls.js"></script>
-    <script src="/static/libs/OBJLoader.js"></script>
-    <script src="/static/libs/MTLLoader.js"></script> -->
-
-        <!-- Three.js Core -->
+    <script src="/static/lib/p5.min.js"></script>
+    
+    <!-- Three.js Core -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
     <!-- Three.js Add-ons -->
@@ -21,8 +17,8 @@
 </head>
 
 <body>
+    <div id="header">
         <table width=1220px>
-        <table>
             <tr>
                 <td style="text-align:left; font-family:Arial, Helvetica, sans-serif; font-size:32px; font-weight:bold"
                     width=85%> &nbsp My Project </td>
@@ -34,11 +30,12 @@
     </div>
     <div id="container" style="margin-top:2%">
         <script src="/static/js/global.js"></script>
-        <script src="/static/libs/grid.js"></script>
-        <script src="/static/libs/buildingElements.js"></script>
+        <script src="/static/lib/grid.js"></script>
+        <script src="/static/lib/buildingElements.js"></script>
+        <script src="/static/lib/UItable.js"></script>
         <script src="/static/js/userElements.js"></script>
         <script src="/static/js/2Dmain.js"></script>
-        <script src="/static/js/UItable.js"></script>
+        <script src="/static/js/3Dmain.js"></script>
 
 
         <!-- 2D global variables -->
@@ -52,7 +49,7 @@
         <div id="divLevel3D"></div> <!-- For the Levels panel -->
 
         <!-- 3D global variables -->
-        <script src="/static/js/3Dmain.js"></script>
+
 
 
         <div id="divSubmit">
@@ -74,9 +71,8 @@
                 .then(response => response.json())
                 .then(data => {
                     MODELDATA = JSON.stringify(data);
-                    if (MODELDATA.length > 0) {
-                        setupFileList();
-                        selectorChange();
+                    if (MODELDATA.length > 0 && window._p5SetupComplete) {
+                        try { setupFileList(); selectorChange(); } catch(e) {}
                     }
                     setup3D();
                     setInterval(draw3D, 100);

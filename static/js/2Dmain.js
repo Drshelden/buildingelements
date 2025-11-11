@@ -1,18 +1,23 @@
 var _mouseLastInd;
 var grid;
 
-////////////////////  SETUP ///////////////////
-function setup() {
-
-
-    let myCanvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-    myCanvas.parent('div2D');
-
+function userSetup() {
     // !!MUST DO: ADD PAREMATERS YOU WANT DISPLAYED TO THIS ARRAY:
     _parameterList = ["type", "name", "level", "rotation", "opacity"];
     
     // !!MUST DO: ADD NEW CLASSES TO THIS ARRAY:
     _BEClasses = [Wall, Space, Slab, Column, Chair];
+
+}
+
+////////////////////  SETUP ///////////////////
+function setup() {
+
+    // YOU SHOULDN'T NEED TO SET UP ANYTHING HERE. EDIT IN USERSETUP() INSTEAD.
+    let myCanvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+    myCanvas.parent('div2D');
+
+    userSetup();
 
     for (var i = 0; i < _BEClasses.length; i++) {
         _BEClassesByNames[_BEClasses[i].className] = _BEClasses[i];
@@ -25,37 +30,21 @@ function setup() {
     // make The grid
     grid = new Grid(_gridScaleXY, _gridScaleXY, 0, 0, _grid2DXCount, _grid2DYCount);
     grid.setup3D(5, -5, 5, 0, 0, 0);
-    grid.setLevels([0,10,25,50]);
+    grid.setLevels(_gridLevels);
     BuildingElement.grid = grid;
-
-    _currentLevel = 1;
-    _backgroundColor2D = "ffffff";
-
-
-    
-
-
-    
-
-    // setupFileList() and selectorChange() are now called after data is loaded in draw.html
-
-
-
 
     // Set radio buttons
     var formText = "<h3> Building Element Selection </h3> <form>";
     formText += '<input type="radio" name="classradio" value="SELECT" onclick="onRadioChecked(value)"  / > SELECT </input>';
 
+    // programmantically set up the levels. 
     for (var i = 0; i < _BEClasses.length; i++) {
         var mytext = _BEClasses[i].className;
         formText += '<input type="radio" name="classradio" value="' + _BEClasses[i].className + '" onclick="onRadioChecked(value)"  / >' + _BEClasses[i].className + '</input>';
     }
     formText += "</form>";
     document.getElementById("divElementTypeSelect").innerHTML = formText;
-
     document.getElementsByName("classradio")[0].click(); // check the first button, also...
-    // ...runs onRadioChecked, sets the _currentBEClass
-
     var levelFormText = "<h3> Level Selection </h3>";
     levelFormText += "<form>";
     var gridlevels = grid.levels;
@@ -68,7 +57,16 @@ function setup() {
     document.getElementById("divLevel3D").innerHTML = levelFormText;
     // check the first button, alsoruns onRadioChecked, sets the _currentBEClass
     document.getElementsByName("levelradio")[gridlevels.length - 1].click();
+    // Only refresh table after parameters are set
     refreshObjectTable();
+
+    // If MODELDATA was already loaded (async fetch may have finished before p5 setup), initialize file list
+    if (typeof MODELDATA === 'string' && MODELDATA.length > 0) {
+        if (typeof setupFileList === 'function') {
+            try { setupFileList(); selectorChange(); } catch(e) {}
+        }
+    }
+    window._p5SetupComplete = true;
 }
 
 
@@ -76,7 +74,7 @@ function setup() {
 
 ////////////////////  DRAW ///////////////////
 function draw() {
-    background(_backgroundColor2D);
+    background(255);
     noFill();
 
     // draw the grid

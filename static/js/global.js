@@ -8,13 +8,12 @@ var _BEModels = []; // list of all BE Class models by class.
 var _currentBEClass;
 var _parameterList;
 var _dynamicPoints = [];
-var _orthoMode = false;
 var _currentRotation = 0;
 
 var _selectedElement;
 var _selectedID;
-var _currentLevel;
-var _backgroundColor2D;
+var _currentLevel = 1;
+
 
 var scene3D, camera3D, renderer, controls, light;
 var meshArr = [];
@@ -31,6 +30,7 @@ var _gridScaleXY = 30;
 var _grid2DXCount = 21;
 var _grid2DYCount = 15;
 var _orthoMode = false;
-// var grid;
+var _gridLevels = [0,10,25,50];
+
 
 
