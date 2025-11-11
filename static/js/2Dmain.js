@@ -8,15 +8,22 @@ function setup() {
     let myCanvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
     myCanvas.parent('div2D');
 
-    // !!MUST DO: ADD NEW CLASSES TO THIS ARRAY:
-    _BEClasses = [Wall, Space, Slab, Column, Chair];
-    //_BEClasses = [MyClass];
-
     // !!MUST DO: ADD PAREMATERS YOU WANT DISPLAYED TO THIS ARRAY:
     _parameterList = ["type", "name", "level", "rotation", "opacity"];
+    
+    // !!MUST DO: ADD NEW CLASSES TO THIS ARRAY:
+    _BEClasses = [Wall, Space, Slab, Column, Chair];
+
+    for (var i = 0; i < _BEClasses.length; i++) {
+        _BEClassesByNames[_BEClasses[i].className] = _BEClasses[i];
+    }
+
+    for (var i=0; i< _BEClasses.length; i++) {
+        _BEClasses[i].setupModels();
+    }
 
     // make The grid
-    grid = new Grid(30, 30, 0, 0, 21, 11);
+    grid = new Grid(_gridScaleXY, _gridScaleXY, 0, 0, _grid2DXCount, _grid2DYCount);
     grid.setup3D(5, -5, 5, 0, 0, 0);
     grid.setLevels([0,10,25,50]);
     BuildingElement.grid = grid;
@@ -26,17 +33,11 @@ function setup() {
 
 
     
-    for (var i = 0; i < _BEClasses.length; i++) {
-        _BEClassesByNames[_BEClasses[i].className] = _BEClasses[i];
-    }
 
-    setupModels();
+
     
 
-    if (MODELDATA.length > 0) {
-        setupFileList();
-        selectorChange();
-    }
+    // setupFileList() and selectorChange() are now called after data is loaded in draw.html
 
 
 
@@ -71,12 +72,6 @@ function setup() {
 }
 
 
-function setupModels() {
-    for (var i=0; i< _BEClasses.length; i++) {
-        _BEClasses[i].setupModels();
-    }
-
-}
 
 
 ////////////////////  DRAW ///////////////////

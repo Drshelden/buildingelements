@@ -56,6 +56,7 @@ constructor(ansx, ansy, anox, anoy, anmx, anmy) {
 
     // draws the grid points
     draw() {
+        if (!_drawGrid) return;
         for (var i = 0; i < this.mx; i++) {
             for (var j = 0; j < this.my; j++) {
                 // basically indToPix
@@ -71,9 +72,9 @@ constructor(ansx, ansy, anox, anoy, anmx, anmy) {
     }
 
     orthoPoint(currenPoint, lastPoint) {
-        /*     console.log(_orthoMode);
-            if (_orthoMode) { */
-        console.log("Here!")
+
+        if (!_orthoMode) { return currenPoint; }
+
         if (Math.abs(lastPoint.x - currenPoint.x) > Math.abs(lastPoint.y - currenPoint.y)) {
             currenPoint.y = lastPoint.y;
         }
@@ -81,6 +82,7 @@ constructor(ansx, ansy, anox, anoy, anmx, anmy) {
             currenPoint.x = lastPoint.x;
         }
         return currenPoint;
+            
     }
 
 }

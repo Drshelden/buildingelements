@@ -58,34 +58,6 @@ app.get('/api/draw-data', (req, res) => {
     });    
 });
 
-app.get('/retrieve', (req, res) => {
-    res.sendFile(path.join(__dirname, 'static', 'retrieve.html'));
-});
-
-// API endpoint for retrieve data
-app.get('/api/retrieve-data', (req, res) => {
-    var names = [];
-    var dataArr = [];
-    fs.readdir('static/data', (err, files) =>{
-        if (err) {
-            return console.log('Unable to scan directory: ' + err);
-        }
-        var idx = 0;
-        files.forEach(function (file) {
-            names.push(file);
-            var rawdata = getData(file);
-            data = JSON.parse(rawdata);
-            for (var j = 0; j < data.length; j++) {
-                var str = idx+"-"+file+"-"+data[j].type+"-"+data[j].coords+ "-" +data[j].rotation+ "-" +data[j].level+"-"+ data[j].name+ "|";
-                dataArr.push(str);
-            }
-            idx++;
-        });
-        // Return the data as a string for backwards compatibility
-        res.json(dataArr.join(''));
-    });    
-});
-
 app.post('/add', (req, res) => {
     var filename = req.body.name + ".json";
     var data = req.body.details;
